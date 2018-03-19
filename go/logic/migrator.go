@@ -158,12 +158,17 @@ func (this *Migrator) retryOperationWithExponentialBackoff(operation func() erro
 	maxRetries := int(this.migrationContext.MaxRetries())
 	maxInterval := this.migrationContext.ExponentialBackoffMaxInterval
 	for i := 0; i < maxRetries; i++ {
-		time.Sleep(time.Duration(interval) * time.Second)
+		newInterval := int64(math.Exp2(float64(i - 1)))
+		if newInterval <= maxInterval {
+			interval = newInterval
+		}
+		if i != 0 {
+			time.Sleep(time.Duration(interval) * time.Second)
+		}
 		err = operation()
 		if err == nil {
 			return nil
 		}
-		interval = math.Min(int64(math.Exp2(float64(numAttempts))), maxInterval)
 	}
 	if len(notFatalHint) == 0 {
 		this.migrationContext.PanicAbort <- err
