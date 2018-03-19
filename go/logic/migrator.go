@@ -156,7 +156,7 @@ func (this *Migrator) retryOperation(operation func() error, notFatalHint ...boo
 func (this *Migrator) retryOperationWithExponentialBackoff(operation func() error, notFatalHint ...bool) (err error) {
 	var interval int64
 	maxRetries := int(this.migrationContext.MaxRetries())
-	maxInterval := this.migrationContext.exponentialBackoffMaxInterval
+	maxInterval := this.migrationContext.ExponentialBackoffMaxInterval
 	for i := 0; i < maxRetries; i++ {
 		time.Sleep(time.Duration(interval) * time.Second)
 		err = operation()

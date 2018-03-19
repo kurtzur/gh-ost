@@ -345,9 +345,9 @@ func (this *MigrationContext) SetCutOverLockTimeoutSeconds(timeoutSeconds int64)
 
 func (this *MigrationContext) SetExponentialBackoffMaxInterval(intervalSeconds int64) error {
 	if intervalSeconds < 2 {
-		return fmt.Errorf("Minimal maximum interval is 2sec. Timeout remains at %d", this.exponentialBackoffMaxInterval)
+		return fmt.Errorf("Minimal maximum interval is 2sec. Timeout remains at %d", this.ExponentialBackoffMaxInterval)
 	}
-	this.exponentialBackoffMaxInterval = intervalSeconds
+	this.ExponentialBackoffMaxInterval = intervalSeconds
 	return nil
 }
 
